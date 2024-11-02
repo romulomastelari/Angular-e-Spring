@@ -15,11 +15,19 @@ public class PessoaService {
     private PessoaRepository pessoaRepository;
 
     public Pessoa atualizar(Long id, Pessoa pessoa) {
+        Pessoa pessoaSalva = buscarPessoaPeloId(id);
+        BeanUtils.copyProperties(pessoa, pessoaSalva, "id");
+        return pessoaRepository.save(pessoaSalva);
+    }
+
+    public void atualizarPropriedadeAtivo(Long id, Boolean ativo) {
+        Pessoa pessoaSalva = buscarPessoaPeloId(id);
+        pessoaSalva.setAtivo(ativo);
+        pessoaRepository.save(pessoaSalva);
+    }
+
+    public Pessoa buscarPessoaPeloId(Long id) {
         return pessoaRepository.findById(id)
-                .map(pessoaExistente -> {
-                    BeanUtils.copyProperties(pessoa, pessoaExistente, "id");
-                    return pessoaRepository.save(pessoaExistente);
-                })
                 .orElseThrow(() -> new EmptyResultDataAccessException(1));
     }
 }
