@@ -1,5 +1,7 @@
 package com.algamoney.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,6 +41,12 @@ public class Pessoa {
 
     public @NotNull Boolean getAtivo() {
         return ativo;
+    }
+
+    @JsonIgnore
+    @Transient
+    public boolean isInative(){
+        return !ativo;
     }
 
     public void setAtivo(@NotNull Boolean ativo) {
